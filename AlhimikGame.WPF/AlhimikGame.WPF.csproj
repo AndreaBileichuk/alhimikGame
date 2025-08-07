@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AlhimikGame.Core\AlhimikGame.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\crystal.jpg" />
+      <Resource Include="Assets\crystal.jpg" />
+      <None Remove="Assets\default_ingredient.jpg" />
+      <Resource Include="Assets\default_ingredient.jpg" />
+      <None Remove="Assets\herb.jpg" />
+      <Resource Include="Assets\herb.jpg" />
+      <None Remove="Assets\water.jpg" />
+      <Resource Include="Assets\water.jpg" />
+      <None Remove="Assets\witch.jpg" />
+      <Resource Include="Assets\witch.jpg" />
+      <None Remove="Assets\berry.jpg" />
+      <Resource Include="Assets\berry.jpg" />
+      <None Remove="Assets\sunflower.jpg" />
+      <Resource Include="Assets\sunflower.jpg" />
+      <None Remove="Assets\stone.jpg" />
+      <Resource Include="Assets\stone.jpg" />
+      <None Remove="Assets\salt.jpg" />
+      <Resource Include="Assets\salt.jpg" />
+      <None Remove="Assets\root.jpg" />
+      <Resource Include="Assets\root.jpg" />
+      <None Remove="Assets\mushroom.jpg" />
+      <Resource Include="Assets\mushroom.jpg" />
+      <None Remove="Assets\moss.jpg" />
+      <Resource Include="Assets\moss.jpg" />
+      <None Remove="Assets\leaf.jpg" />
+      <Resource Include="Assets\leaf.jpg" />
+      <None Remove="Assets\dust.jpg" />
+      <Resource Include="Assets\dust.jpg" />
+      <None Remove="Assets\level1.jpg" />
+      <Resource Include="Assets\level1.jpg" />
+      <None Remove="Assets\level3.jpg" />
+      <Resource Include="Assets\level3.jpg" />
+      <None Remove="Assets\level2.jpg" />
+      <Resource Include="Assets\level2.jpg" />
+      <None Remove="Assets\level4.jpg" />
+      <Resource Include="Assets\level4.jpg" />
+      <None Remove="Assets\level5.jpg" />
+      <Resource Include="Assets\level5.jpg" />
+      <None Remove="Assets\level6.jpg" />
+      <Resource Include="Assets\level6.jpg" />
+    </ItemGroup>
+
+</Project>

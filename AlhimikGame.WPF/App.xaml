@@ -1,0 +1,20 @@
+﻿<Application x:Class="AlhimikGame.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:AlhimikGame.WPF.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <converters:HealthConverter x:Key="HealthConverter" />
+        <converters:StatPairConverter x:Key="StatPairConverter" />
+        <converters:ProgressBarValueConverter x:Key="ProgressBarValueConverter"/>
+        <converters:NameInitialsConverter x:Key="NameInitialsConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+            
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converters:CompletedLevelColorConverter x:Key="CompletedLevelColorConverter"/>
+        <converters:IndexToBooleanConverter x:Key="IndexToBooleanConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:EqualityConverter x:Key="EqualityConverter"/>
+    </Application.Resources>
+</Application>

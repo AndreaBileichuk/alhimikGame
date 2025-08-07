@@ -1,0 +1,251 @@
+﻿<UserControl x:Class="AlhimikGame.WPF.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:AlhimikGame.WPF.ViewModels"
+             xmlns:converters="clr-namespace:AlhimikGame.WPF.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Margin" Value="0,0,0,15" />
+                <Setter Property="Foreground" Value="#333333" />
+            </Style>
+
+            <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+                <Setter Property="Foreground" Value="#444444" />
+            </Style>
+
+            <Style x:Key="LabelTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="Margin" Value="0,5,5,0" />
+                <Setter Property="Foreground" Value="#555555" />
+            </Style>
+
+            <Style x:Key="ValueTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="Margin" Value="5,5,0,0" />
+                <Setter Property="Foreground" Value="#333333" />
+            </Style>
+
+            <Style x:Key="CardPanelStyle" TargetType="Border">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="15" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="5" Opacity="0.2" Color="#555" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:ProfileViewModel />
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#F5F7FA" Offset="0" />
+                <GradientStop Color="#E4E8F0" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <!-- Header -->
+                <Border Style="{StaticResource CardPanelStyle}"
+                        Background="#4B2E83"
+                        Margin="5,0,5,10">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="100" Height="100" CornerRadius="50" Background="#6E43B5" Margin="0,0,20,0">
+                            <TextBlock Text="{Binding Player.Name, Converter={StaticResource NameInitialsConverter}}"
+                                       FontSize="36" FontWeight="Bold" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Player.Name}"
+                                       FontSize="30" FontWeight="Bold" Foreground="White" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Player.Level, StringFormat='Level {0} Alchemist'}"
+                                       FontSize="18" Foreground="#D7D0E3" Margin="0,5,10,0" />
+                                <Border CornerRadius="4" Background="#58A55C" Padding="5,2" 
+                                        Visibility="{Binding Player.IsInvisible, Converter={StaticResource BoolToVisConverter}}"
+                                        VerticalAlignment="Center" Margin="0,5,0,0">
+                                    <TextBlock Text="Invisible" FontSize="12" Foreground="White" />
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Content Wrapper -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left Column -->
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <!-- Basic Stats -->
+                        <Border Style="{StaticResource CardPanelStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Статус гравця" Style="{StaticResource SectionHeaderStyle}" />
+
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Experience Row -->
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Досвід:"
+                                               Style="{StaticResource LabelTextBlockStyle}" />
+                                    <StackPanel Grid.Row="0" Grid.Column="1">
+                                        <TextBlock Text="{Binding Player.Experience, StringFormat='{}{0} XP'}"
+                                                   Style="{StaticResource ValueTextBlockStyle}" />
+                                        <Grid Margin="0,5,0,10">
+                                            <ProgressBar
+                                                Value="{Binding Player.Experience, Converter={StaticResource ProgressBarValueConverter}, ConverterParameter=100}"
+                                                Maximum="100" Height="8" Background="#E0E0E0">
+                                                <ProgressBar.Foreground>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <GradientStop Color="#4B2E83" Offset="0" />
+                                                        <GradientStop Color="#8A6FBD" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </ProgressBar.Foreground>
+                                            </ProgressBar>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Gold Row -->
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Золото:"
+                                               Style="{StaticResource LabelTextBlockStyle}" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Player.Gold}"
+                                               Style="{StaticResource ValueTextBlockStyle}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Inventory -->
+                        <Border Style="{StaticResource CardPanelStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Inventory" Style="{StaticResource SectionHeaderStyle}" />
+
+                                <ListView ItemsSource="{Binding Player.Inventory}"
+                                          Background="Transparent" BorderThickness="0"
+                                          MaxHeight="250">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Key.Name}"
+                                                           FontWeight="Medium" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Value, StringFormat='x{0}'}"
+                                                           Margin="15,0,0,0" Foreground="#666" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Right Column -->
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <!-- Elixirs -->
+                        <Border Style="{StaticResource CardPanelStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Elixirs" Style="{StaticResource SectionHeaderStyle}" />
+
+                                <ListView ItemsSource="{Binding Player.Elixirs}"
+                                          Background="Transparent" BorderThickness="0"
+                                          MaxHeight="250">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Medium" />
+                                                    <TextBlock Text="{Binding Description}" FontSize="11"
+                                                               TextWrapping="Wrap" Foreground="#666" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Active Quests -->
+                        <Border Style="{StaticResource CardPanelStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Active Quests" Style="{StaticResource SectionHeaderStyle}" />
+
+                                <ListView ItemsSource="{Binding Player.ActiveQuests}"
+                                          Background="Transparent" BorderThickness="0"
+                                          MaxHeight="200">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0,5">
+                                                <TextBlock Text="{Binding Title}" FontWeight="Medium" />
+                                                <TextBlock Text="{Binding Description}" FontSize="11"
+                                                           TextWrapping="Wrap" Foreground="#666" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

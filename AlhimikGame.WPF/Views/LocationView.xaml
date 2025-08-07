@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="AlhimikGame.WPF.Views.LocationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AlhimikGame.WPF.Views"
+             xmlns:viewModels="clr-namespace:AlhimikGame.WPF.ViewModels"
+             mc:Ignorable="d">
+    
+    <UserControl.DataContext>
+        <viewModels:LocationViewModel />
+    </UserControl.DataContext>
+    
+    <UserControl.Resources>
+        <Style x:Key="LocationTabButton" TargetType="Button">
+            <Setter Property="Background" Value="#272336"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#322A45"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#322A45"/>
+                                <Setter Property="Foreground" Value="#9B7DEE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#6F4ECC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#8360EE"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#444153"/>
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="LevelButton" TargetType="Button">
+            <Setter Property="Background" Value="#6F4ECC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#8360EE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Location Selection Panel -->
+        <Border Grid.Column="0" Background="#272336" 
+                BorderBrush="#1E1A29" BorderThickness="0,0,1,0">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Локації" 
+                           FontWeight="Bold" FontSize="18" Margin="12,15,10,15"
+                           Foreground="#9B7DEE"/>
+                           
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Locations}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}" 
+                                        Style="{StaticResource LocationTabButton}"
+                                        Command="{Binding DataContext.SelectLocationCommand, 
+                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+        
+        <!-- Location Details Panel -->
+        <Border Grid.Column="1" Background="#1E1A29" Padding="15">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!-- Location Header -->
+                    <TextBlock Text="{Binding CurrentLocation.Name}" 
+                               FontWeight="Bold" FontSize="20" 
+                               Foreground="#9B7DEE"
+                               Margin="0,0,0,5"/>
+                    
+                    <!-- Location Description -->
+                    <TextBlock Text="{Binding CurrentLocation.Description}" 
+                               TextWrapping="Wrap" Margin="0,0,0,20"
+                               Foreground="White"/>
+                    
+                    <!-- Ingredients Section -->
+                    <Expander Header="Доступні інгредієнти" 
+                              IsExpanded="True" 
+                              Margin="0,0,0,10"
+                              Foreground="#9B7DEE"
+                              FontWeight="SemiBold"
+                              Background="#272336">
+                        <StackPanel Margin="10,10,0,0">
+                            <ItemsControl ItemsSource="{Binding AvailableIngredients}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Grid.Column="0" 
+                                                       Text="{Binding Key.Name}" 
+                                                       VerticalAlignment="Center"
+                                                       Foreground="White"/>
+                                            
+                                            <TextBlock Grid.Column="1" 
+                                                       Text="{Binding Value, StringFormat='x{0}'}" 
+                                                       Margin="10,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#9B7DEE"
+                                                       FontWeight="SemiBold"/>
+                                            
+                                            <Button Grid.Column="2" 
+                                                    Content="Зібрати" 
+                                                    Style="{StaticResource ActionButton}"
+                                                    Command="{Binding DataContext.GatherIngredientCommand, 
+                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Padding="8,3"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            
+                            <!-- Empty state message -->
+                            <TextBlock Text="В цій локації немає інгредієнтів"
+                                       Visibility="{Binding AvailableIngredients.Count, Converter={StaticResource CountToVisibilityConverter}}" 
+                                       Foreground="#888888" Margin="0,10"/>
+                        </StackPanel>
+                    </Expander>
+                    
+                    <!-- Shops Section -->
+                    <Expander Header="Магазини" 
+                              IsExpanded="True"
+                              Visibility="{Binding HasShops, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Margin="0,0,0,10"
+                              Foreground="#9B7DEE"
+                              FontWeight="SemiBold"
+                              Background="#272336">
+                        <ItemsControl ItemsSource="{Binding CurrentLocation.Shops}" Margin="10,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Name}"
+                                                   VerticalAlignment="Center"/>
+                                        
+                                        <Button Grid.Column="1" 
+                                                Content="Відвідати" 
+                                                Style="{StaticResource ActionButton}"
+                                                Command="{Binding DataContext.VisitShopCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                    
+                    <!-- NPCs Section -->
+                    <Expander Header="Персонажі" 
+                              IsExpanded="True"
+                              Visibility="{Binding HasNPCs, Converter={StaticResource BoolToVisibilityConverter}}"
+                              Margin="0,0,0,10">
+                        <ItemsControl ItemsSource="{Binding CurrentLocation.NPCs}" Margin="10,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Name}"
+                                                   VerticalAlignment="Center"/>
+                                        
+                                        <Button Grid.Column="1" 
+                                                Content="Поговорити" 
+                                                Style="{StaticResource ActionButton}"
+                                                Command="{Binding DataContext.TalkToNPCCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,362 @@
+﻿<UserControl x:Class="AlhimikGame.WPF.Views.AlchemyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:AlhimikGame.WPF.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="650" d:DesignWidth="1000">
+
+    <UserControl.DataContext>
+        <vm:AlchemyViewModel />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <!-- Gradient Background Brushes -->
+        <SolidColorBrush x:Key="ParchmentBackground" Color="#222133" />
+
+        <LinearGradientBrush x:Key="RecipeCardBackground" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFFFFF" Offset="0.0" />
+            <GradientStop Color="#F9F9F9" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="HeaderBackground" Color="#222133" />
+
+        <!-- Drop Shadow Effect -->
+        <DropShadowEffect x:Key="CardShadow" ShadowDepth="2" Direction="315"
+                          Opacity="0.3" BlurRadius="5" Color="Black" />
+
+        <!-- Recipe Card Style -->
+        <Style x:Key="RecipeCard" TargetType="Border">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Background" Value="{StaticResource RecipeCardBackground}" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="2" Direction="315" Opacity="0.2" BlurRadius="5" Color="Black" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#6247AA" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                <GradientStop Color="#F3F1FA" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Title Style -->
+        <Style x:Key="RecipeTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="Foreground" Value="#6247AA" />
+        </Style>
+
+        <!-- Section Header Style -->
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#6247AA" />
+            <Setter Property="Margin" Value="0,8,0,4" />
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="AlchemyButton" TargetType="Button">
+            <Setter Property="Background" Value="#6247AA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderBrush" Value="#5039A0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#7355B7" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#5039A0" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Craft Button Style -->
+        <Style x:Key="CraftButton" TargetType="Button" BasedOn="{StaticResource AlchemyButton}">
+            <Setter Property="Background" Value="#8D69F1" />
+            <Setter Property="Padding" Value="15,10" />
+            <Setter Property="FontSize" Value="14" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#9D7FFA" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#7355B7" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Value Badge Style -->
+        <Style x:Key="ValueBadge" TargetType="Border">
+            <Setter Property="Background" Value="#6247AA" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="5,2" />
+            <Setter Property="Margin" Value="3,0" />
+        </Style>
+
+        <!-- Slider Style -->
+        <Style x:Key="SpendAmountSlider" TargetType="Slider">
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Maximum" Value="100" />
+            <Setter Property="TickFrequency" Value="25" />
+            <Setter Property="IsSnapToTickEnabled" Value="True" />
+            <Setter Property="Margin" Value="0,5,0,10" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource ParchmentBackground}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{StaticResource HeaderBackground}" Padding="15,12">
+                <TextBlock Text="Алхімічна лабораторія"
+                           FontFamily="Segoe UI"
+                           FontSize="20"
+                           FontWeight="SemiBold"
+                           Foreground="#8D69F1">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="1" Direction="330"
+                                          Opacity="0.3" BlurRadius="1" Color="Black" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="300" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Recipe List -->
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto"
+                              Padding="5" Background="#11FFFFFF" Margin="0,0,5,0">
+                    <ItemsControl ItemsSource="{Binding FilteredRecipeVMs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource RecipeCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource RecipeTitle}"
+                                                   Text="{Binding Recipe.Name}" />
+                                        <TextBlock Text="{Binding Recipe.Description}"
+                                                   TextWrapping="Wrap" Margin="0,0,0,10"
+                                                   FontFamily="Segoe UI" Foreground="#333333" />
+
+                                        <WrapPanel Margin="0,2,0,8">
+                                            <Border Style="{StaticResource ValueBadge}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Складність: " FontWeight="SemiBold"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                    <TextBlock Text="{Binding Recipe.Difficulty}"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Style="{StaticResource ValueBadge}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Цінність: " FontWeight="SemiBold"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                    <TextBlock Text="{Binding Recipe.Value}"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Style="{StaticResource ValueBadge}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Тип: " FontWeight="SemiBold"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                    <TextBlock Text="{Binding Recipe.ResultType}"
+                                                               Foreground="#F8EACB" FontSize="11" />
+                                                </StackPanel>
+                                            </Border>
+                                        </WrapPanel>
+
+                                        <TextBlock Style="{StaticResource SectionHeader}"
+                                                   Text="Інгредієнти:" />
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="#DBC28B"
+                                                Margin="0,0,0,6" Opacity="0.6" />
+                                        <TextBlock Text="{Binding InventoryStatus}"
+                                                   TextWrapping="Wrap" FontFamily="Georgia"
+                                                   Foreground="#444444" />
+                                        <Button Style="{StaticResource AlchemyButton}"
+                                                Content="Обрати рецепт"
+                                                Margin="0 10 0 0"
+                                                Command="{Binding DataContext.SelectRecipeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Crafting Panel -->
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto"
+                              Padding="5" Background="#11FFFFFF" Margin="0,0,5,0">
+                    <Border BorderThickness="1" BorderBrush="#E0E0E0"
+                        Background="White" Margin="5" Padding="15" CornerRadius="8"
+                        Effect="{StaticResource CardShadow}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Title -->
+                        <TextBlock Grid.Row="0" Text="Вибраний рецепт"
+                                   FontFamily="Segoe UI" FontWeight="SemiBold"
+                                   FontSize="18" Foreground="#6247AA"
+                                   Margin="0,0,0,15" />
+
+                        <!-- Recipe Name -->
+                        <Border Grid.Row="1" BorderThickness="0,0,0,1"
+                                BorderBrush="#E0E0E0" Padding="0,0,0,5" Margin="0,0,0,10">
+                            <TextBlock Text="{Binding SelectedRecipe.Recipe.Name, FallbackValue='Не вибрано'}"
+                                       FontFamily="Segoe UI" FontWeight="SemiBold"
+                                       FontSize="16" Foreground="#8D69F1" />
+                        </Border>
+
+                        <!-- Recipe Description -->
+                        <TextBlock Grid.Row="2"
+                                   Text="{Binding SelectedRecipe.Recipe.Description, FallbackValue='Виберіть рецепт зі списку щоб розпочати створення еліксиру.'}"
+                                   TextWrapping="Wrap" Margin="0,0,0,15"
+                                   FontFamily="Segoe UI" Foreground="#333333" />
+
+                        <!-- Spend Amount Control -->
+                        <Grid Grid.Row="3" Margin="0,0,0,15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Виберіть рівень еліксиру:"
+                                       FontFamily="Segoe UI" FontWeight="SemiBold"
+                                       Foreground="#6247AA" Margin="0,0,0,10" />
+
+                            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                <Button Content="25 - Base" Style="{StaticResource AlchemyButton}" 
+                                        Width="180" Height="40" Margin="0,5,0,5" 
+                                        Command="{Binding SetSpendAmountCommand}" CommandParameter="25"/>
+                                <Button Content="50 - Advanced" Style="{StaticResource AlchemyButton}" 
+                                        Width="180" Height="40" Margin="0,5,0,5" 
+                                        Command="{Binding SetSpendAmountCommand}" CommandParameter="50"/>
+                                <Button Content="100 - Master" Style="{StaticResource AlchemyButton}" 
+                                        Width="180" Height="40" Margin="0,5,0,5" 
+                                        Command="{Binding SetSpendAmountCommand}" CommandParameter="100"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Selected Amount Display -->
+                        <Border Grid.Row="4" Background="#F5F3FC" CornerRadius="5"
+                                Padding="10" Margin="0,0,0,15" MinHeight="80">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Вибраний рівень:" FontFamily="Segoe UI"
+                                           FontWeight="SemiBold" Margin="0,0,0,5" Foreground="#6247AA" />
+
+                                <TextBlock Grid.Row="1" Text="{Binding SpendAmount, StringFormat='{}{0} золота'}"
+                                           FontWeight="SemiBold" Margin="0,0,0,10" Foreground="#8D69F1" />
+
+                                <TextBlock Grid.Row="2"
+                                           Text="{Binding CraftingResult, FallbackValue='Тут зявиться результат після створення еліксиру.'}"
+                                           TextWrapping="Wrap" FontFamily="Segoe UI"
+                                           Foreground="#333333" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Craft Button -->
+                        <Button Grid.Row="5" Content="Створити еліксир" Height="45"
+                                Style="{StaticResource CraftButton}"
+                                Command="{Binding CraftCommand}" />
+                    </Grid>
+                </Border>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Footer -->
+            <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#333344"
+                    Background="#222133" Padding="15,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="Змінити тип еліксиру: " VerticalAlignment="Center"
+                                   FontFamily="Segoe UI" FontWeight="SemiBold"
+                                   Foreground="White" />
+                        <Button Content="Лікування" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Healing" />
+                        <Button Content="Мана" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Mana" />
+                        <Button Content="Сила" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Strength" />
+                        <Button Content="Посилення" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Enhancement" />
+                        <Button Content="Розумовий" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Mental" />
+                        <Button Content="Корисність" Style="{StaticResource AlchemyButton}"
+                                Command="{Binding SwitchFactoryCommand}" CommandParameter="Utility" />
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding CurrentFactoryType, StringFormat='Поточний тип: {0}'}"
+                               VerticalAlignment="Center" FontFamily="Segoe UI"
+                               Foreground="White" Margin="10,0" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
